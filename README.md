@@ -3,7 +3,7 @@
 一款用于展示markdown文档的轻量级Java应用，适用于公司用作接口文档的管理。
 - 未使用任何框架。采用纯servlet、filter实现
 - 支持按不同模块管理访问者权限
-- 配合linux服务器＋git（markdown文档存放在某个git服务器上）可无需登录linux服务器更新文档
+- [非必]配合linux服务器＋git（markdown文档存放在某个git服务器上）可无需登录linux服务器更新文档
 
 ## 如何使用？
 - 修改User.java中的`SYS_USER_TOKEN`和`SYS_PASSWORD_TOKEN`［如果懒的弄，也可以不改，安全起见改掉:) ］
