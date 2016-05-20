@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>登录</title>
+		<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
+		<script src="http://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+		<script src="http://cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+		<script src="md5.js"></script>
+		<script src="js.cookie.js"></script>
+		<style type="text/css">
+			.login-box, .alert-box {
+				width: 43%;
+				min-width: 200px;
+			}
+			.login-box {
+				height: 300px;
+				margin: 10px auto 0 auto;
+			}
+			.alert-box {
+				margin: 0px auto 0 auto;
+				display:none;
+			}
+			.alert-wrapper {
+				height: 55px;
+				margin-top: 10px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="alert-wrapper"></div>
+		<div class="panel panel-default panel-primary login-box">
+			<div class="panel-heading">登录</div>
+			<div class="panel-body">
+				<form amethod="post" class="login_form">
+					<div class="form-group">
+						<label for="login_name">用户名</label>
+						<input type="text" class="form-control" id="login_name" name="loginName" placeholder="用户名">
+					</div>
+					<div class="form-group">
+						<label for="password">Password</label>
+						<input type="password" class="form-control" id="password" name="password" placeholder="密码">
+					</div>
+					
+					<div class="checkbox">
+						<label>
+						<input id="remember" name="remember" type="checkbox" checked="checked" /> 30天内免登录
+						</label>
+					</div>
+					<button id="login" type="button" class="btn btn-default">登录</button>
+				</form>
+			</div>
+		</div>
+		<script>
+			function bsAlert(msg) {
+				var alertDiv = $('<div class="alert alert-danger fade in alert-box"><a href="#" class="close" data-dismiss="alert">&times;</a>' + msg + "</div>");
+				$(".alert-wrapper").html(alertDiv);
+				alertDiv.fadeIn();
+				return alertDiv;
+			}
+			$(function(){
+				$("input").keypress(function(e) {
+					if(e.which == 13) {
+						$("#login").click();
+					}
+				}); 
+
+				Cookies.remove("MDDOC-TOKEN");
+				Cookies.remove("MDDOC-NAME");
+				
+				$("#login").click(function(){
+					var loginName = $("#login_name").val();
+					var password = $("#password").val();
+					var isRemember = $("#remember")[0].checked;
+					if (loginName == "") {
+						bsAlert("登录名不能为空");
+						return;
+					}
+					if (password == "") {
+						bsAlert("密码不能为空");
+						return;
+					}
+					$(this).attr("disabled", true);
+					$(this).html("登录中...");
+					var _this = this;
+					$.ajax({
+						"url":"login.do",
+						"dataType":"json",
+						"type": "POST",
+						"data":{"loginName":loginName, "password": hex_md5(password), "remember": isRemember?"on":""},
+						"success": function(data){
+							if (data.result == '0') {
+								$(_this).attr("disabled", false);
+								$(_this).html("登录");
+								bsAlert(data.msg);
+								return;
+							}
+							var option = {};
+							if (data.remeber == '1') {
+								option.expires = 30;
+							}
+							Cookies.set("MDDOC-TOKEN",data.token, option);
+							Cookies.set("MDDOC-NAME",data.name, option);
+							
+
+							var lastUrl = Cookies.get("MDDOC-LAST-URL");
+							if (lastUrl == null || lastUrl == "") {
+								window.location.href = "index.html";
+							} else {
+								window.location.href = lastUrl;
+							}
+						},
+						"error": function(XMLHttpRequest, textStatus, errorThrown) {
+							$(_this).attr("disabled", false);
+							$(_this).html("登录");
+							$(".alert-box").html('<a href="#" class="close" data-dismiss="alert">&times;</a>服务器错误').show();
+						},
+						"complete": function (XMLHttpRequest, textStatus) {
+							
+						}
+					});
+				});
+			})
+		</script>
+	</body>
+</html>
