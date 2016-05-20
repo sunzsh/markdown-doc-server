@@ -44,19 +44,16 @@ public class SetUserFilter implements Filter{
 		Cookie lastCookie = new Cookie("MDDOC-LAST-URL", req.getContextPath() + req.getRequestURI());
 		lastCookie.setPath("/");
 		resp.addCookie(lastCookie);
-		if (loginName ==  null || token == null) {
-			return;
-		}
-		User user = User.allUser.get(loginName);
-		if (user == null) {
-			return;
-		}
-		
-		if (!token.equalsIgnoreCase(ParseMD5.parseStrToMd5L32(user.getLoginPwd()+User.SYS_USER_TOKEN))) {
-			return;
+		User user = null;
+		if (loginName !=  null && token != null) {
+			user = User.allUser.get(loginName);
+			if (user != null) {
+				if (token.equalsIgnoreCase(ParseMD5.parseStrToMd5L32(user.getLoginPwd()+User.SYS_USER_TOKEN))) {
+					CurrentInfo.setValue(CurrentInfo.CURRENT_MEMUSER, user);
+				}
+			}
 		}
 		
-		CurrentInfo.setValue(CurrentInfo.CURRENT_MEMUSER, user);
 		chain.doFilter(request, response);
 	}
 	
