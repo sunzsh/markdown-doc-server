@@ -54,6 +54,9 @@ public class User {
 	}
 	
 	public static boolean hasAuth(String requestProject, User user) {
+		if (user == null) {
+			return false;
+		}
 		if (user.getAuths().length == 0) {
 			return false;
 		}
