@@ -31,7 +31,13 @@
 		    <artifactId>pegdown</artifactId>
 		    <version>1.6.0</version>
 		</dependency>
-	
+		
+		<dependency>
+			<groupId>org.eclipse.jgit</groupId>
+			<artifactId>org.eclipse.jgit</artifactId>
+			<version>4.3.1.201605051710-r</version>
+		</dependency>
+		
 		<!-- <dependency>
 		    <groupId>org.commonjava.googlecode.markdown4j</groupId>
 		    <artifactId>markdown4j</artifactId>
