@@ -49,12 +49,12 @@
     </servlet-mapping>
      
     <servlet>
-       <servlet-name>history</servlet-name>
+       <servlet-name>show</servlet-name>
        <servlet-class>com.dhgh.mddoc.servlet.ShowServlet</servlet-class>
     </servlet>
     
     <servlet-mapping>
-       <servlet-name>history</servlet-name>
+       <servlet-name>show</servlet-name>
        <url-pattern>*.show</url-pattern>
     </servlet-mapping>
     
