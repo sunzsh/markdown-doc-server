@@ -91,7 +91,7 @@ public class MDServlet extends HttpServlet{
 		
 		html.append(body);
 		if (id == null) {
-			html.append("<h1></h1><div style='text-align:right;'><a style='' href='"+uri +".log' target='_blank'>历史记录</a></div>");
+			html.append("<h1></h1><div style='text-align:right;'><a style='' href='"+uri +".log' target='_blank'>当前文件历史记录</a></div>");
 		} else {
 			html.append("<h1></h1><div style='text-align:right;color:#bbbbbb'><span>"+historyCommit.getFullMessage()+"</span><br/><span>"+historyCommit.getAuth()+" @"+new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(historyCommit.getWhen())+"<span></div>");
 		}
