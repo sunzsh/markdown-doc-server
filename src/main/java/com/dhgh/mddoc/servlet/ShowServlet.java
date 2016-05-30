@@ -21,6 +21,7 @@ import org.eclipse.jgit.revwalk.RevTree;
 import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.treewalk.TreeWalk;
 
+import com.dhgh.mddoc.util.HistoryCommit;
 import com.dhgh.mddoc.util.MDReader;
 
 public class ShowServlet extends HttpServlet{
@@ -31,8 +32,9 @@ public class ShowServlet extends HttpServlet{
 	private static final long serialVersionUID = -8457872538937299282L;
 
 
-	private static String fetchBlob(String revSpec, String path, String rootPath)
+	public static HistoryCommit fetchBlob(String revSpec, String path, String rootPath)
 			throws MissingObjectException, IncorrectObjectTypeException, IOException {
+		HistoryCommit result = new HistoryCommit();
 		Git git = Git.open(new File(rootPath)); 
         Repository repository = git.getRepository();  
         
@@ -47,18 +49,20 @@ public class ShowServlet extends HttpServlet{
 			// Get the commit object for that revision
 			walk = new RevWalk(reader);
 			RevCommit commit = walk.parseCommit(id);
+			result.setWhen(commit.getCommitterIdent().getWhen());
+			result.setFullMessage(commit.getFullMessage());
+			result.setAuth(commit.getAuthorIdent().getName());
+			
 
 			// Get the revision's file tree
 			RevTree tree = commit.getTree();
 			// .. and narrow it down to the single file's path
 			treewalk = TreeWalk.forPath(reader, path, tree);
-
 			if (treewalk != null) {
-				// use the blob id to read the file's data
 				byte[] data = reader.open(treewalk.getObjectId(0)).getBytes();
-				return new String(data, "utf-8");
+				result.setContent(new String(data, "utf-8"));
 			} else {
-				return "";
+				result.setContent("");
 			}
 		} finally {
 			if (walk != null) {
@@ -68,6 +72,7 @@ public class ShowServlet extends HttpServlet{
 				treewalk.close();
 			}
 		}
+		return result;
 	}
 
 
@@ -90,7 +95,7 @@ public class ShowServlet extends HttpServlet{
 		} else {
 			path = rootPath + project;
 		}
-		String content = fetchBlob(id, logFile, path);
+		String content = fetchBlob(id, logFile, path).getContent();
 		out.println(content);
 	}
 

@@ -34,5 +34,8 @@ public class ReadFromFile {
         }
         return new MDDocument(fileName, result.toString());
     }
+    public static MDDocument parseDocumentByContent(String content) {
+        return new MDDocument("", content);
+    }
     
 }

@@ -28,19 +28,22 @@ public class SetUserFilter implements Filter{
 			throws IOException, ServletException {
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse resp = (HttpServletResponse) response;
+		CurrentInfo.clear();
 		Cookie[] cookies = req.getCookies();
 		String loginName = null;
 		String token = null;
-		for (Cookie cookie : cookies) {
-			if (cookie.getName().equals("MDDOC-TOKEN")) {
-				token = cookie.getValue();
-			} else if (cookie.getName().equals("MDDOC-NAME")) {
-				loginName = cookie.getValue();
-			}
-			if (loginName != null && token != null) {
-				break;
-			}
- 		}
+		if (cookies != null){
+			for (Cookie cookie : cookies) {
+				if (cookie.getName().equals("MDDOC-TOKEN")) {
+					token = cookie.getValue();
+				} else if (cookie.getName().equals("MDDOC-NAME")) {
+					loginName = cookie.getValue();
+				}
+				if (loginName != null && token != null) {
+					break;
+				}
+	 		}
+		}
 		Cookie lastCookie = new Cookie("MDDOC-LAST-URL", req.getContextPath() + req.getRequestURI());
 		lastCookie.setPath("/");
 		resp.addCookie(lastCookie);
@@ -52,6 +55,8 @@ public class SetUserFilter implements Filter{
 					CurrentInfo.setValue(CurrentInfo.CURRENT_MEMUSER, user);
 				}
 			}
+		} else {
+			
 		}
 		
 		chain.doFilter(request, response);

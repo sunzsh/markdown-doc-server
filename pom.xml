@@ -4,7 +4,7 @@
 
 	<groupId>com.dhgh</groupId>
 	<artifactId>mddoc</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.9-SNAPSHOT</version>
 	<packaging>war</packaging>
 
 	<name>mddoc</name>
