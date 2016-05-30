@@ -71,7 +71,7 @@ public class HistoryServlet extends HttpServlet{
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			for(RevCommit revCommit : revWalk){
 //				hisStr.append("<li><span class='time'>" + sdf.format(revCommit.getCommitterIdent().getWhen()) + "</span><a href='"+req.getRequestURI().replaceAll("\\.log$", ".show")+"?id="+revCommit.getId().name()+"'>"+revCommit.getId().name()+"</a><span class='msg'>"+revCommit.getFullMessage()+"</span><span class='user'>"+ revCommit.getAuthorIdent().getName() +"</span></li>");
-				hisStr.append("<a href='"+req.getRequestURI().replaceAll("\\.log$", ".show")+"?id="+revCommit.getId().name()+"' class='list-group-item'>"
+				hisStr.append("<a target='_blank' href='"+req.getRequestURI().replaceAll("\\.log$", ".show")+"?id="+revCommit.getId().name()+"' class='list-group-item'>"
 							+ "<h5 class='list-group-item-heading'>" + sdf.format(revCommit.getCommitterIdent().getWhen()) + "<span style='color:#337AB7;'> by " + revCommit.getAuthorIdent().getName() + "</span></h5>"
 							+ "<p class='list-group-item-text'>" + revCommit.getFullMessage() + "</p>"
 							+ "</a>");

@@ -54,6 +54,7 @@ public class MDServlet extends HttpServlet{
 		
 		html.append(body);
 
+		html.append("<h1></h1><div style='text-align:right;'><a style='' href='"+uri +".log' target='_blank'>历史记录</a></div>");
 		html.append("</div>");
 		html.append("</div>");
 		html.append("</article>");
