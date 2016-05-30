@@ -89,7 +89,7 @@ public class MDReader {
 			if (this.body == null) {
 				return;
 			}
-			String[] content = this.body.split("\r\n");
+			String[] content = this.body.split("(\r\n)|(\n)");
 
 			Pattern p = Pattern.compile("^\\s*\\<\\!\\-\\-\\s*title\\:\\s*.*\\s*\\-\\-\\>\\s*$", Pattern.CASE_INSENSITIVE); 
 			for (String line : content) {

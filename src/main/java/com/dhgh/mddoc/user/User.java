@@ -83,7 +83,6 @@ public class User {
 				if (valueArr.length > 1) {
 					auths = valueArr[1].split("\\s*,\\s*");
 				}
-				System.out.println(name + "," + pwd + "," + auths + "," + valueArr[1]);
 				registerUser(name, pwd, auths);
 				
 			}
