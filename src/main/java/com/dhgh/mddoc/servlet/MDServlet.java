@@ -66,7 +66,7 @@ public class MDServlet extends HttpServlet{
 			}
 		}
 		
-		PegDownProcessor pegDownProcessor = new PegDownProcessor(Extensions.ALL);
+		PegDownProcessor pegDownProcessor = new PegDownProcessor(Extensions.ALL_WITH_OPTIONALS);
 		String body = pegDownProcessor.markdownToHtml(mdDocument.getBody());
 
 		html.append("<!DOCTYPE html>\r\n");
