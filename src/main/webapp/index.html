@@ -18,8 +18,16 @@
 		</style>
 	</head>
 	<body>
-		<div class="alert alert-success welcome" role="alert">请手动输入地址访问</div>
+		<div class="alert alert-success welcome" role="alert" style="display:none;">请手动输入地址访问</div>
 		<script>
+		$(function(){
+			var token = Cookies.set("MDDOC-TOKEN");
+			if (token == null || token == '') {
+				window.location.href = 'login.html';
+			} else {
+				$('.welcome').show();
+			}
+		});
 		</script>
 	</body>
 </html>
