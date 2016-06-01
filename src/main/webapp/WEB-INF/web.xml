@@ -11,7 +11,7 @@
     	<description>设置不走任何过滤器的资源</description>
     	<init-param>
     		<param-name>types</param-name>
-    		<param-value>.js|.css|.jpg|.png|.ico|.html|/login.do</param-value>
+    		<param-value>.js|.css|.jpg|.png|.ico|.html|/login.do|.json</param-value>
     	</init-param>
     </filter>
 	<filter>
