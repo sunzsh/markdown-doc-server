@@ -16,7 +16,7 @@ import com.dhgh.mddoc.user.User;
 import com.dhgh.mddoc.util.CurrentInfo;
 import com.dhgh.mddoc.util.ParseMD5;
 
-public class SetUserFilter implements Filter{
+public class IndexMDFilter implements Filter{
 	
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
@@ -30,41 +30,16 @@ public class SetUserFilter implements Filter{
 			chain.doFilter(request, response);
 			return;
 		}
+		
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse resp = (HttpServletResponse) response;
-
-		CurrentInfo.clear();
-		Cookie[] cookies = req.getCookies();
-		String loginName = null;
-		String token = null;
-		if (cookies != null){
-			for (Cookie cookie : cookies) {
-				if (cookie.getName().equals("MDDOC-TOKEN")) {
-					token = cookie.getValue();
-				} else if (cookie.getName().equals("MDDOC-NAME")) {
-					loginName = cookie.getValue();
-				}
-				if (loginName != null && token != null) {
-					break;
-				}
-	 		}
-		}
-		Cookie lastCookie = new Cookie("MDDOC-LAST-URL", req.getContextPath() + req.getRequestURI());
-		lastCookie.setPath("/");
-		resp.addCookie(lastCookie);
-		User user = null;
-		if (loginName !=  null && token != null) {
-			user = User.allUser.get(loginName);
-			if (user != null) {
-				if (token.equalsIgnoreCase(ParseMD5.parseStrToMd5L32(user.getLoginPwd()+User.SYS_USER_TOKEN))) {
-					CurrentInfo.setValue(CurrentInfo.CURRENT_MEMUSER, user);
-				}
-			}
-		} else {
-			
-		}
+		String uri = req.getRequestURI();
 		
-		chain.doFilter(request, response);
+		if (uri.matches(".*\\/[^(\\/|\\.)]*\\/?$")) {
+			resp.sendRedirect(uri.replaceAll("\\/$", "") + "/index.md");
+		} else {
+			chain.doFilter(request, response);
+		}
 	}
 	
 	@Override

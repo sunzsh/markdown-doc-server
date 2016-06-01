@@ -26,9 +26,18 @@ public class AuthFilter implements Filter{
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
+		if (ResPassFilter.isResource(request)) {
+			chain.doFilter(request, response);
+			return;
+		}
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse resp = (HttpServletResponse) response;
-		
+
+		String uri = req.getRequestURI();
+		if (uri.equals("/login.do")) {
+			chain.doFilter(request, response);
+			return;
+		}
 
 		User user = CurrentInfo.getCurrentUser();
 		if (user ==  null) {
@@ -36,7 +45,6 @@ public class AuthFilter implements Filter{
 			return;
 		}
 
-		String uri = req.getRequestURI();
 		int index = uri.indexOf('/', 1);
 		String requestProject = null;
 		if (index >= 0) {
