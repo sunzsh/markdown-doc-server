@@ -35,7 +35,7 @@ public class IndexMDFilter implements Filter{
 		HttpServletResponse resp = (HttpServletResponse) response;
 		String uri = req.getRequestURI();
 		
-		if (uri.matches(".*\\/[^(\\/|\\.)]*\\/?$")) {
+		if (!uri.equals("/") && uri.matches(".*\\/[^(\\/|\\.)]*\\/?$")) {
 			resp.sendRedirect(uri.replaceAll("\\/$", "") + "/index.md");
 		} else {
 			chain.doFilter(request, response);
