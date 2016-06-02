@@ -10,10 +10,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.parboiled.Rule;
+import org.parboiled.parserunners.ParseRunner;
 import org.pegdown.Extensions;
 import org.pegdown.LinkRenderer;
+import org.pegdown.Parser;
 import org.pegdown.PegDownProcessor;
 import org.pegdown.ToHtmlSerializer;
+import org.pegdown.Parser.ParseRunnerProvider;
+import org.pegdown.ast.Node;
 import org.pegdown.plugins.PegDownPlugins;
 
 import com.dhgh.mddoc.util.HistoryCommit;
@@ -65,8 +70,10 @@ public class MDServlet extends HttpServlet{
 				return;
 			}
 		}
-		
+//		Parser parser = new Parser(Extensions.ALL_WITH_OPTIONALS, 5000l, new parserruner);
+//		Parser p = new Parser(Extensions.ALL_WITH_OPTIONALS, 5000l, Parser.DefaultParseRunnerProvider);
 		PegDownProcessor pegDownProcessor = new PegDownProcessor(Extensions.ALL_WITH_OPTIONALS);
+		
 		String body = pegDownProcessor.markdownToHtml(mdDocument.getBody());
 
 		html.append("<!DOCTYPE html>\r\n");
@@ -74,8 +81,10 @@ public class MDServlet extends HttpServlet{
 		html.append("\t<head>\r\n");
 		html.append("\t\t<title>"+ mdDocument.getTitle() +"</title>\r\n");
 		html.append("\t\t<link type=\"text/css\" rel=\"stylesheet\" href=\""+req.getContextPath()+"/github.css\" />\r\n");
+		html.append("\t\t<link type=\"text/css\" rel=\"stylesheet\" href=\""+req.getContextPath()+"/styles/github.css\" />\r\n");
+		html.append("\t\t<script src=\""+ req.getContextPath() +"/highlight.pack.js\"></script>\r\n");
+		html.append("<script src=\"http://cdn.bootcss.com/jquery/1.11.3/jquery.min.js\"></script>");
 		if (id != null) {
-			html.append("<script src=\"http://cdn.bootcss.com/jquery/1.11.3/jquery.min.js\"></script>");
 			html.append("<script>$(function(){"
 					+ "$('a').each(function(i, n){"
 					+ "	var href = $(n).attr('href');"
@@ -83,6 +92,11 @@ public class MDServlet extends HttpServlet{
 					+ "});})</script>");
 			html.append("<style>body{background-color:#eafcf7;}</style>");
 		}
+
+		html.append("<script>$(function(){"
+				+ "$('pre code[class]').each(function(i, block) {hljs.highlightBlock(block);});"
+				+ "})</script>");
+		
 		html.append("\t</head>\r\n");
 		html.append("\t<body>\r\n");
 		html.append("<div class=\"container\">");
