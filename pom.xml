@@ -76,8 +76,6 @@
 							<configuration>
 								<sources>
 									<!--基本依赖项目，本地绝对路径，如果直接将编译后文件打入项目需配置. -->
-									<source>src/main/java</source>
-									<source>src/main/resources</source>
 								</sources>
 							</configuration>
 						</execution>
